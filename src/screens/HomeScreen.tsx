@@ -10,7 +10,8 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { CreditCard, ScanLine, Search, MapPin } from 'lucide-react-native';
+import { CreditCard, Search, MapPin } from 'lucide-react-native';
+import QRIcon from '../assets/icon/scan-qr-code1.svg';
 
 interface HomeScreenProps {
   onPaymentPress?: () => void;
@@ -59,7 +60,7 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
             <Text style={styles.buttonSubtitle}>가맹점</Text>
             <Text style={styles.buttonTitle}>QR 결제하기</Text>
           </View>
-          <ScanLine size={50} color="#FF7049" />
+          <QRIcon width={50} height={50} fill="#FF7049" />
         </TouchableOpacity>
 
         {/* 금액 카드 */}

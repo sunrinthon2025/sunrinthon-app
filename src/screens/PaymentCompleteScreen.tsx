@@ -32,9 +32,11 @@ export default function PaymentCompleteScreen({ orderAmount, onConfirm }: Paymen
       
       <View style={styles.header}>
         <View style={styles.logoContainer}>
-          <View style={styles.iconContainer}>
-            <Check size={24} color="#FF7049" />
-          </View>
+          <Image 
+            source={require('../assets/logo.png')} 
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.headerText}>우리페이 현장 결제</Text>
         </View>
       </View>
@@ -51,7 +53,7 @@ export default function PaymentCompleteScreen({ orderAmount, onConfirm }: Paymen
         <View style={styles.paymentInfo}>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>가맹점</Text>
-            <Text style={styles.infoValue}>쿠쿠우</Text>
+            <Text style={styles.infoValue}>쿠우쿠우</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>결제 금액</Text>
@@ -88,13 +90,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: '#FF7049',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo: {
+    width: 36,
+    height: 36,
   },
   headerText: {
     fontSize: 17,
@@ -126,7 +124,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   paymentInfo: {
-    backgroundColor: '#F9FAFB',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
     borderRadius: 12,
     padding: 20,
     width: '100%',

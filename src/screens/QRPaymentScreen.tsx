@@ -16,14 +16,15 @@ const { width } = Dimensions.get('window');
 
 interface QRPaymentScreenProps {
   onBack?: () => void;
+  onPaymentComplete?: () => void;
 }
 
-export default function QRPaymentScreen({ onBack }: QRPaymentScreenProps) {
-  const [timeLeft, setTimeLeft] = useState(152);
+export default function QRPaymentScreen({ onBack, onPaymentComplete }: QRPaymentScreenProps) {
+  const [timeLeft, setTimeLeft] = useState(180);
   const [qrData, setQrData] = useState<QRCodeData>({
     paymentId: 'payment_123456',
     amount: 15000,
-    expiresAt: new Date(Date.now() + 152000),
+    expiresAt: new Date(Date.now() + 180000),
   });
   
   // QR 코드를 위한 고정 timestamp 생성 (한 번만)
@@ -42,6 +43,15 @@ export default function QRPaymentScreen({ onBack }: QRPaymentScreenProps) {
 
     return () => clearInterval(timer);
   }, []);
+
+  // 테스트를 위해 5초 후 자동 결제 완료
+  useEffect(() => {
+    const paymentTimer = setTimeout(() => {
+      onPaymentComplete?.();
+    }, 5000);
+
+    return () => clearTimeout(paymentTimer);
+  }, [onPaymentComplete]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

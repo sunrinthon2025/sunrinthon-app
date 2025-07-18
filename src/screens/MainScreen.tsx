@@ -12,6 +12,7 @@ import SearchScreen from './SearchScreen';
 import StoreDetailScreen from './StoreDetailScreen';
 import OrderScreen from './OrderScreen';
 import OrderStatusScreen from './OrderStatusScreen';
+import PaymentCompleteScreen from './PaymentCompleteScreen';
 import BottomTabBar from '../components/BottomTabBar';
 
 export default function MainScreen() {
@@ -21,12 +22,18 @@ export default function MainScreen() {
   const [showStoreDetail, setShowStoreDetail] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
   const [showOrderStatus, setShowOrderStatus] = useState(false);
+  const [showPaymentComplete, setShowPaymentComplete] = useState(false);
   const [selectedStore, setSelectedStore] = useState<any>(null);
   const [orderAmount, setOrderAmount] = useState(0);
 
   const handlePaymentPress = () => {
     setShowQR(true);
     setActiveTab('home'); // QR 화면으로 이동할 때 홈 탭으로 설정
+  };
+
+  const handlePaymentComplete = () => {
+    setShowQR(false);
+    setShowPaymentComplete(true);
   };
 
   const handleSearchPress = () => {
@@ -45,6 +52,13 @@ export default function MainScreen() {
 
   const handleBackFromQR = () => {
     setShowQR(false);
+  };
+
+  const handleConfirmPaymentComplete = () => {
+    setShowPaymentComplete(false);
+    setSelectedStore(null);
+    setOrderAmount(0);
+    setActiveTab('home');
   };
 
   const handleBackFromSearch = () => {
@@ -76,7 +90,11 @@ export default function MainScreen() {
 
   const renderScreen = () => {
     if (showQR) {
-      return <QRPaymentScreen onBack={handleBackFromQR} />;
+      return <QRPaymentScreen onBack={handleBackFromQR} onPaymentComplete={handlePaymentComplete} />;
+    }
+
+    if (showPaymentComplete) {
+      return <PaymentCompleteScreen orderAmount={orderAmount} onConfirm={handleConfirmPaymentComplete} />;
     }
 
     if (showSearch) {
@@ -121,7 +139,7 @@ export default function MainScreen() {
       case 'history':
         return <PaymentHistoryScreen />;
       case 'profile':
-        return <QRPaymentScreen onBack={handleBackFromQR} />; // 임시로 QR 화면 표시
+        return <QRPaymentScreen onBack={handleBackFromQR} onPaymentComplete={handlePaymentComplete} />; // 임시로 QR 화면 표시
       default:
         return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} onStorePress={handleStorePress} />;
     }
@@ -138,8 +156,8 @@ export default function MainScreen() {
     );
   }
 
-  // StoreDetail이나 Order 화면일 때는 SafeAreaView 사용하고 바텀바 숨김
-  if (showStoreDetail || showOrder) {
+  // StoreDetail, Order, PaymentComplete 화면일 때는 SafeAreaView 사용하고 바텀바 숨김
+  if (showStoreDetail || showOrder || showPaymentComplete) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
@@ -170,7 +188,7 @@ export default function MainScreen() {
       <View style={styles.content}>
         {renderScreen()}
       </View>
-      {!showQR && !showSearch && !showOrder && !showOrderStatus && (
+      {!showQR && !showSearch && !showOrder && !showOrderStatus && !showPaymentComplete && (
         <BottomTabBar 
           activeTab={activeTab}
           onTabPress={setActiveTab}
