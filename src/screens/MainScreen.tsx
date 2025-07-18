@@ -56,6 +56,22 @@ export default function MainScreen() {
     }
   };
 
+  // 지도 페이지에서만 SafeAreaView 제거
+  if (activeTab === 'map' && !showQR && !showSearch) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          {renderScreen()}
+        </View>
+        <BottomTabBar 
+          activeTab={activeTab}
+          onTabPress={setActiveTab}
+        />
+      </View>
+    );
+  }
+
+  // 다른 페이지들은 SafeAreaView 사용
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -79,4 +95,5 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+
 }); 

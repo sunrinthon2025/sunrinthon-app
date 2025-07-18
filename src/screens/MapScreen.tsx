@@ -92,7 +92,7 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
     { id: '음식점', image: require('../assets/images/food.png') },
     { id: '카페', image: require('../assets/images/coffee.png') },
     { id: '마트', image: require('../assets/images/mart.png') },
-    { id: '편의점', image: require('../assets/images/store.png') },
+    { id: '편의점', image: require('../assets/images/gs25.png') },
   ];
 
   return (
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     position: 'absolute',
-    top: 50,
+    top: 70,
     left: 20,
     right: 20,
     zIndex: 1,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     position: 'absolute',
-    top: 120,
+    top: 140,
     left: 20,
     right: 20,
     flexDirection: 'row',
