@@ -79,6 +79,18 @@ export default function MainScreen() {
     }
   };
 
+  // StoreDetail 화면일 때는 SafeAreaView 사용하고 바텀바 숨김
+  if (showStoreDetail) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          {renderScreen()}
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Map 화면일 때는 SafeArea 없이
   if (activeTab === 'map' && !showQR && !showSearch) {
     return (
       <View style={styles.container}>
@@ -99,7 +111,7 @@ export default function MainScreen() {
       <View style={styles.content}>
         {renderScreen()}
       </View>
-      {!showQR && !showSearch && !showStoreDetail && (
+      {!showQR && !showSearch && (
         <BottomTabBar 
           activeTab={activeTab}
           onTabPress={setActiveTab}

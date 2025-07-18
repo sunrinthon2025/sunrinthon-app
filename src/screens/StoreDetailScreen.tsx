@@ -30,7 +30,7 @@ export default function StoreDetailScreen({ store, onBack, onOrder }: StoreDetai
   ];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       
       {/* 상단 헤더 */}
@@ -89,7 +89,7 @@ export default function StoreDetailScreen({ store, onBack, onOrder }: StoreDetai
           <Text style={styles.orderButtonText}>포장 주문하기</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -158,11 +158,10 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   menuImage: {
-    width: 60,
-    height: 60,
+    width: 55,
+    height: 45,
     borderRadius: 8,
-    backgroundColor: '#4CAF50',
-  },
+},
   menuInfo: {
     flex: 1,
   },
