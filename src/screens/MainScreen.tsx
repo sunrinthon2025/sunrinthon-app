@@ -11,6 +11,7 @@ import PaymentHistoryScreen from './PaymentHistoryScreen';
 import SearchScreen from './SearchScreen';
 import StoreDetailScreen from './StoreDetailScreen';
 import OrderScreen from './OrderScreen';
+import OrderStatusScreen from './OrderStatusScreen';
 import BottomTabBar from '../components/BottomTabBar';
 
 export default function MainScreen() {
