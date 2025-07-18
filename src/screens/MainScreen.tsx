@@ -9,12 +9,15 @@ import MapScreen from './MapScreen';
 import QRPaymentScreen from './QRPaymentScreen';
 import PaymentHistoryScreen from './PaymentHistoryScreen';
 import SearchScreen from './SearchScreen';
+import StoreDetailScreen from './StoreDetailScreen';
 import BottomTabBar from '../components/BottomTabBar';
 
 export default function MainScreen() {
   const [activeTab, setActiveTab] = useState('home');
   const [showQR, setShowQR] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showStoreDetail, setShowStoreDetail] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<any>(null);
 
   const handlePaymentPress = () => {
     setShowQR(true);
@@ -25,6 +28,11 @@ export default function MainScreen() {
     setShowSearch(true);
   };
 
+  const handleStorePress = (store: any) => {
+    setSelectedStore(store);
+    setShowStoreDetail(true);
+  };
+
   const handleBackFromQR = () => {
     setShowQR(false);
   };
@@ -33,30 +41,44 @@ export default function MainScreen() {
     setShowSearch(false);
   };
 
+  const handleBackFromStoreDetail = () => {
+    setShowStoreDetail(false);
+    setSelectedStore(null);
+  };
+
   const renderScreen = () => {
     if (showQR) {
       return <QRPaymentScreen onBack={handleBackFromQR} />;
     }
 
     if (showSearch) {
-      return <SearchScreen onBackPress={handleBackFromSearch} />;
+      return <SearchScreen onBackPress={handleBackFromSearch} onStorePress={handleStorePress} />;
+    }
+
+    if (showStoreDetail && selectedStore) {
+      return (
+        <StoreDetailScreen 
+          store={selectedStore} 
+          onBack={handleBackFromStoreDetail}
+          onOrder={handlePaymentPress}
+        />
+      );
     }
 
     switch (activeTab) {
       case 'home':
-        return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} />;
+        return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} onStorePress={handleStorePress} />;
       case 'map':
-        return <MapScreen onPaymentPress={handlePaymentPress} />;
+        return <MapScreen onPaymentPress={handlePaymentPress} onStorePress={handleStorePress} />;
       case 'history':
         return <PaymentHistoryScreen />;
       case 'profile':
         return <QRPaymentScreen onBack={handleBackFromQR} />; // 임시로 QR 화면 표시
       default:
-        return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} />;
+        return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} onStorePress={handleStorePress} />;
     }
   };
 
-  // 지도 페이지에서만 SafeAreaView 제거
   if (activeTab === 'map' && !showQR && !showSearch) {
     return (
       <View style={styles.container}>
@@ -77,7 +99,7 @@ export default function MainScreen() {
       <View style={styles.content}>
         {renderScreen()}
       </View>
-      {!showQR && !showSearch && (
+      {!showQR && !showSearch && !showStoreDetail && (
         <BottomTabBar 
           activeTab={activeTab}
           onTabPress={setActiveTab}

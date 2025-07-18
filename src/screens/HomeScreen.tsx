@@ -15,9 +15,10 @@ import { CreditCard, ScanLine, Search, MapPin } from 'lucide-react-native';
 interface HomeScreenProps {
   onPaymentPress?: () => void;
   onSearchPress?: () => void;
+  onStorePress?: (store: any) => void;
 }
 
-export default function HomeScreen({ onPaymentPress, onSearchPress }: HomeScreenProps) {
+export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress }: HomeScreenProps) {
   const categories = [
     { id: 1, name: '음식점', image: require('../assets/images/food.png') },
     { id: 2, name: '카페', image: require('../assets/images/coffee.png') },
@@ -91,7 +92,16 @@ export default function HomeScreen({ onPaymentPress, onSearchPress }: HomeScreen
         <View style={styles.storeSection}>
           <Text style={styles.sectionTitle}>내가 자주 이용하는 가맹점</Text>
           {subwayStores.map((store) => (
-            <TouchableOpacity key={store.id} style={styles.storeItem}>
+            <TouchableOpacity 
+              key={store.id} 
+              style={styles.storeItem}
+              onPress={() => onStorePress?.({ 
+                id: store.id, 
+                name: store.name, 
+                address: '경기도 역곡시 용산동 32-1',
+                distance: store.distance 
+              })}
+            >
               <Image 
                 source={require('../assets/images/subway.png')} 
                 style={styles.storeImage}

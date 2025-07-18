@@ -13,19 +13,17 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import SearchIcon from '../assets/icon/search.svg';
-import CreditCardIcon from '../assets/icon/credit-card.svg';
-import ScanQRIcon from '../assets/icon/scan-qr-code.svg';
-import StoreDetailModal from '../components/StoreDetailModal';
+
 
 interface MapScreenProps {
   onPaymentPress?: () => void;
+  onStorePress?: (store: any) => void;
 }
 
-export default function MapScreen({ onPaymentPress }: MapScreenProps) {
+export default function MapScreen({ onPaymentPress, onStorePress }: MapScreenProps) {
   const [selectedCategory, setSelectedCategory] = useState('음식점');
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
-  const [selectedStore, setSelectedStore] = useState<any>(null);
-  const [modalVisible, setModalVisible] = useState(false);
+
   const [region, setRegion] = useState({
     latitude: 37.5665,
     longitude: 126.9780,
@@ -114,16 +112,12 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
             longitude: region.longitude + 0.001,
           }}
           onPress={() => {
-            setSelectedStore({
+            onStorePress?.({
               id: 1,
-              name: '서브웨이',
+              name: '서브웨이 역곡점',
+              address: '경기도 역곡시 용산동 32-1',
               distance: '32m',
-              address: '서울특별시 중구 세종대로 110',
-              phone: '02-1234-5678',
-              rating: 4.5,
-              reviews: 128,
             });
-            setModalVisible(true);
           }}
         >
           <Image 
@@ -142,8 +136,12 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
               longitude: store.longitude,
             }}
             onPress={() => {
-              setSelectedStore(store);
-              setModalVisible(true);
+              onStorePress?.({
+                id: store.id,
+                name: `${store.name} 역곡점`,
+                address: store.address,
+                distance: store.distance,
+              });
             }}
           >
             <Image 
@@ -195,16 +193,7 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
 
 
 
-      {/* 매장 상세 모달 */}
-      <StoreDetailModal
-        visible={modalVisible}
-        store={selectedStore}
-        onClose={() => setModalVisible(false)}
-        onOrder={() => {
-          setModalVisible(false);
-          onPaymentPress?.();
-        }}
-      />
+
     </View>
   );
 }

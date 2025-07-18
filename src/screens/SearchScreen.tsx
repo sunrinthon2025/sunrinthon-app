@@ -14,9 +14,10 @@ import { Search, ArrowLeft } from 'lucide-react-native';
 
 interface SearchScreenProps {
   onBackPress?: () => void;
+  onStorePress?: (store: any) => void;
 }
 
-export default function SearchScreen({ onBackPress }: SearchScreenProps) {
+export default function SearchScreen({ onBackPress, onStorePress }: SearchScreenProps) {
   const [searchText, setSearchText] = useState('');
 
   const recentSearches = [
@@ -94,7 +95,16 @@ export default function SearchScreen({ onBackPress }: SearchScreenProps) {
           /* 검색 결과 */
           <View style={styles.section}>
             {searchResults.map((result) => (
-              <TouchableOpacity key={result.id} style={styles.searchResultItem}>
+              <TouchableOpacity 
+                key={result.id} 
+                style={styles.searchResultItem}
+                onPress={() => onStorePress?.({
+                  id: result.id,
+                  name: `${result.name} 역곡점`,
+                  address: '경기도 역곡시 용산동 32-1',
+                  distance: result.distance,
+                })}
+              >
                 <Image 
                   source={require('../assets/images/subway.png')} 
                   style={styles.searchResultImage}
