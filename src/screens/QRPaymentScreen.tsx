@@ -54,7 +54,7 @@ export default function QRPaymentScreen() {
       <View style={styles.header}>
         <View style={styles.logoContainer}>
           <Image 
-            source={require('../../assets/logo.png')} 
+            source={require('../assets/logo.png')} 
             style={styles.logo}
             resizeMode="contain"
           />
@@ -87,7 +87,7 @@ export default function QRPaymentScreen() {
       <View style={styles.affiliationSection}>
         <Text style={styles.affiliationLabel}>소속</Text>
         <Image 
-          source={require('../../assets/firestation.png')} 
+          source={require('../assets/firestation.png')} 
           style={styles.policeImage}
           resizeMode="contain"
         />

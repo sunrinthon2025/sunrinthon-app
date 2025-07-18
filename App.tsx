@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import QRPaymentScreen from './src/screens/QRPaymentScreen';
+import MainScreen from './src/screens/MainScreen';
 
 export default function App() {
   return (
     <>
-      <QRPaymentScreen />
+      <MainScreen />
       <StatusBar style="auto" />
     </>
   );
