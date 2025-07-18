@@ -10,7 +10,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { CreditCard, QrCode, Search, MapPin, Gift } from 'lucide-react-native';
+import { CreditCard, ScanLine, Search, MapPin, Package } from 'lucide-react-native';
 
 interface HomeScreenProps {
   onPaymentPress?: () => void;
@@ -21,7 +21,7 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
     { id: 1, name: '음식점', image: require('../assets/images/food.png') },
     { id: 2, name: '카페', image: require('../assets/images/coffee.png') },
     { id: 3, name: '마트', image: require('../assets/images/mart.png') },
-    { id: 4, name: '편의점', image: require('../assets/images/store.png') },
+    { id: 4, name: '편의점', image: require('../assets/images/gs25.png') },
   ];
 
   const subwayStores = [
@@ -41,24 +41,40 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* 상단 로고 */}
+        <View style={styles.logoSection}>
+          <Image 
+            source={require('../assets/logo.png')} 
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+
         {/* 상단 헤더 섹션 */}
         <View style={styles.headerSection}>
           <TouchableOpacity style={styles.headerButton} onPress={onPaymentPress}>
-            <QrCode size={24} color="#FF7049" />
-            <Text style={styles.headerButtonText}>QR 결제하기</Text>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonSubtitle}>가맹점</Text>
+              <Text style={styles.buttonTitle}>QR 결제하기</Text>
+            </View>
+            <ScanLine size={24} color="#FF7049" />
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.headerButton}>
-            <View style={styles.pointIcon}>
-              <Text style={styles.pointIconText}>🎁</Text>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonSubtitle}>가맹점</Text>
+              <Text style={styles.buttonTitle}>포장 주문하기</Text>
             </View>
-            <Text style={styles.headerButtonText}>기타 포인트 적립하기</Text>
+            <Package size={24} color="#FF7049" />
           </TouchableOpacity>
         </View>
 
         {/* 금액 카드 */}
         <View style={styles.amountCard}>
-          <Text style={styles.amountLabel}>더 많이 사용 가능 금액</Text>
+          <View style={styles.amountHeader}>
+            <CreditCard size={20} color="#ffffff" />
+            <Text style={styles.amountLabel}>현재 사용 가능 금액</Text>
+          </View>
           <Text style={styles.amountValue}>19,990원</Text>
         </View>
 
@@ -85,7 +101,7 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
 
         {/* 쉽게 가는 이용하는 가맹점 */}
         <View style={styles.storeSection}>
-          <Text style={styles.sectionTitle}>쉽게 가는 이용하는 가맹점</Text>
+          <Text style={styles.sectionTitle}>내가 자주 이용하는 가맹점</Text>
           {subwayStores.map((store) => (
             <TouchableOpacity key={store.id} style={styles.storeItem}>
               <Image 
@@ -101,31 +117,18 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
           ))}
         </View>
 
-        {/* 1곳 가맹점 위치 */}
-        <View style={styles.locationSection}>
-          <View style={styles.locationHeader}>
-            <Text style={styles.sectionTitle}>1곳 가맹점 위치</Text>
-            <TouchableOpacity>
-              <Text style={styles.viewAllText}>전체보기</Text>
-            </TouchableOpacity>
-          </View>
-          
-          <TouchableOpacity style={styles.storeItem}>
-            <Image 
-              source={require('../assets/images/subway.png')} 
-              style={styles.storeImage}
-              resizeMode="cover"
-            />
-            <View style={styles.storeInfo}>
-              <Text style={styles.storeName}>서브웨이</Text>
-              <Text style={styles.storeDistance}>32m</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        {/* 광고 이미지 */}
+        <TouchableOpacity style={styles.adContainer}>
+          <Image 
+            source={require('../assets/images/ad.png')} 
+            style={styles.adImage}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
 
         {/* 선택 받고있는 가맹점 */}
         <View style={styles.popularSection}>
-          <Text style={styles.sectionTitle}>선택 받고있는 가맹점</Text>
+          <Text style={styles.sectionTitle}>나와 가까운 가맹점</Text>
           {mcdonaldsStores.map((store) => (
             <TouchableOpacity key={store.id} style={styles.popularStoreItem}>
               <Image 
@@ -155,6 +158,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
   },
+  logoSection: {
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
+  logo: {
+    width: 36,
+    height: 36,
+    aspectRatio: 1,
+  },
   headerSection: {
     flexDirection: 'row',
     gap: 12,
@@ -163,10 +175,19 @@ const styles = StyleSheet.create({
   headerButton: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     padding: 16,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.07,
+    shadowRadius: 2,
+    elevation: 1,
     gap: 8,
   },
   headerButtonText: {
@@ -174,26 +195,40 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#333333',
   },
-  pointIcon: {
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
+  buttonContent: {
+    flex: 1,
+    alignItems: 'flex-start',
   },
-  pointIconText: {
-    fontSize: 18,
+  buttonSubtitle: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#6F7785',
+    lineHeight: 20,
+    marginBottom: 4,
   },
+  buttonTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#0D0E0E',
+    lineHeight: 24,
+  },
+
   amountCard: {
     backgroundColor: '#FF7049',
     borderRadius: 16,
     padding: 24,
     marginBottom: 20,
   },
+  amountHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
   amountLabel: {
     fontSize: 14,
     fontWeight: '500',
     color: '#ffffff',
-    marginBottom: 8,
   },
   amountValue: {
     fontSize: 28,
@@ -201,21 +236,21 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   searchSection: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   searchContainer: {
     flexDirection: 'row',
+    padding: 16,
     alignItems: 'center',
-    backgroundColor: '#F8F9FA',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    gap: 12,
+    alignSelf: 'stretch',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    backgroundColor: '#ffffff',
     marginBottom: 16,
-    gap: 8,
+    marginHorizontal: 0,
   },
   searchInput: {
     flex: 1,
@@ -225,32 +260,34 @@ const styles = StyleSheet.create({
   categoriesContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
   },
   categoryItem: {
     alignItems: 'center',
     gap: 8,
   },
   categoryImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    aspectRatio: 1,
+    borderRadius: 20,
+    borderWidth: 0,
   },
   categoryText: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: '500',
-    color: '#333333',
+    color: '#000000',
+    lineHeight: 24,
   },
   storeSection: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
     borderRadius: 12,
-    padding: 16,
     marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
-    color: '#333333',
+    color: '#000000',
+    lineHeight: 26,
     marginBottom: 16,
   },
   storeItem: {
@@ -260,8 +297,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   storeImage: {
-    width: 40,
-    height: 40,
+    width: 90,
+    height: 60,
     borderRadius: 8,
     backgroundColor: '#4CAF50',
   },
@@ -269,37 +306,31 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   storeName: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#333333',
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000000',
+    lineHeight: 26,
     marginBottom: 2,
   },
   storeDistance: {
-    fontSize: 12,
+    fontSize: 14,
+    fontWeight: '500',
     color: '#6F7785',
+    lineHeight: 20,
   },
-  locationSection: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 12,
-    padding: 16,
+
+  adContainer: {
+    alignSelf: 'stretch',
     marginBottom: 20,
   },
-  locationHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  viewAllText: {
-    fontSize: 12,
-    color: '#6F7785',
+  adImage: {
+    height: 92.5,
+    alignSelf: 'stretch',
+    aspectRatio: 370.00 / 92.50,
+    borderRadius: 16,
   },
   popularSection: {
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
     borderRadius: 12,
-    padding: 16,
     marginBottom: 20,
   },
   popularStoreItem: {
