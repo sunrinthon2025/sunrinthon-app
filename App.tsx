@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import MainScreen from './src/screens/MainScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import DocumentUploadScreen from './src/screens/DocumentUploadScreen';
 import ImageConfirmScreen from './src/screens/ImageConfirmScreen';
 import SignupCompleteScreen from './src/screens/SignupCompleteScreen';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<'onboarding' | 'documentUpload' | 'imageConfirm' | 'signupComplete' | 'main'>('onboarding');
+  const [currentScreen, setCurrentScreen] = useState<'login' | 'onboarding' | 'documentUpload' | 'imageConfirm' | 'signupComplete' | 'main'>('login');
   const [uploadedImageUri, setUploadedImageUri] = useState<string>('');
+
+  const handleLogin = () => {
+    setCurrentScreen('onboarding');
+  };
 
   const handleOnboardingComplete = () => {
     setCurrentScreen('documentUpload');
@@ -33,6 +38,8 @@ export default function App() {
 
   const renderCurrentScreen = () => {
     switch (currentScreen) {
+      case 'login':
+        return <LoginScreen onLogin={handleLogin} />;
       case 'onboarding':
         return <OnboardingScreen onContinue={handleOnboardingComplete} />;
       case 'documentUpload':
@@ -50,7 +57,7 @@ export default function App() {
       case 'main':
         return <MainScreen />;
       default:
-        return <OnboardingScreen onContinue={handleOnboardingComplete} />;
+        return <LoginScreen onLogin={handleLogin} />;
     }
   };
 
