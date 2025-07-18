@@ -21,18 +21,6 @@ import ProfileImage from '../components/ProfileImage';
 export default function ProfileScreen() {
   const menuItems = [
     {
-      id: 1,
-      title: '결제 설정',
-      icon: <CreditCard size={20} color="#6F7785" />,
-      onPress: () => console.log('결제 설정'),
-    },
-    {
-      id: 2,
-      title: '알림 설정',
-      icon: <Bell size={20} color="#6F7785" />,
-      onPress: () => console.log('알림 설정'),
-    },
-    {
       id: 3,
       title: '도움말',
       icon: <HelpCircle size={20} color="#6F7785" />,
@@ -48,8 +36,7 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* 상단 헤더 */}
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>  
         <View style={styles.header}>
           <Image 
             source={require('../assets/logo.png')} 
@@ -63,21 +50,19 @@ export default function ProfileScreen() {
           />
         </View>
 
-        {/* 프로필 정보 */}
         <View style={styles.profileSection}>
           <ProfileImage 
             size={80}
-            name="김소방"
+            name="신이현"
             showName={false}
           />
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>김소방</Text>
+            <Text style={styles.userName}>신이현</Text>
             <Text style={styles.userDepartment}>서울특별시소방재난본부</Text>
             <Text style={styles.userPosition}>소방위</Text>
           </View>
         </View>
 
-        {/* 잔액 정보 */}
         <View style={styles.balanceCard}>
           <View style={styles.balanceHeader}>
             <CreditCard size={20} color="#ffffff" />
@@ -86,7 +71,6 @@ export default function ProfileScreen() {
           <Text style={styles.balanceAmount}>19,990원</Text>
         </View>
 
-        {/* 메뉴 리스트 */}
         <View style={styles.menuSection}>
           {menuItems.map((item) => (
             <TouchableOpacity 
@@ -103,7 +87,6 @@ export default function ProfileScreen() {
           ))}
         </View>
 
-        {/* 로그아웃 */}
         <TouchableOpacity style={styles.logoutButton}>
           <LogOut size={20} color="#F87171" />
           <Text style={styles.logoutText}>로그아웃</Text>
