@@ -14,9 +14,10 @@ import { CreditCard, ScanLine, Search, MapPin } from 'lucide-react-native';
 
 interface HomeScreenProps {
   onPaymentPress?: () => void;
+  onSearchPress?: () => void;
 }
 
-export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
+export default function HomeScreen({ onPaymentPress, onSearchPress }: HomeScreenProps) {
   const categories = [
     { id: 1, name: '음식점', image: require('../assets/images/food.png') },
     { id: 2, name: '카페', image: require('../assets/images/coffee.png') },
@@ -71,14 +72,10 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
 
         {/* 가맹점 검색 */}
         <View style={styles.searchSection}>
-          <View style={styles.searchContainer}>
+          <TouchableOpacity style={styles.searchContainer} onPress={onSearchPress}>
             <Search size={20} color="#6F7785" />
-            <TextInput 
-              style={styles.searchInput} 
-              placeholder="가맹점 검색하기"
-              placeholderTextColor="#6F7785"
-            />
-          </View>
+            <Text style={styles.searchPlaceholder}>가맹점 검색하기</Text>
+          </TouchableOpacity>
           
           <View style={styles.categoriesContainer}>
             {categories.map((category) => (
@@ -266,6 +263,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: '#333333',
+  },
+  searchPlaceholder: {
+    flex: 1,
+    fontSize: 16,
+    color: '#6F7785',
   },
   categoriesContainer: {
     flexDirection: 'row',
