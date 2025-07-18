@@ -4,29 +4,53 @@
     "slug": "sunrinthon-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./src/assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/favicon.png"
     },
     "scheme": "sunrinthon-app",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sunrinthonapp"
+      "bundleIdentifier": "com.sunrinthonapp",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLName": "com.sunrinthonapp",
+            "CFBundleURLSchemes": ["sunrinthon-app", "com.sunrinthonapp"]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.sunrinthonapp"
+      "package": "com.sunrinthonapp",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "category": ["BROWSABLE", "DEFAULT"],
+          "data": {
+            "scheme": "sunrinthon-app"
+          }
+        },
+        {
+          "action": "VIEW",
+          "category": ["BROWSABLE", "DEFAULT"],
+          "data": {
+            "scheme": "com.sunrinthonapp"
+          }
+        }
+      ]
     },
     "plugins": [
       "expo-web-browser",

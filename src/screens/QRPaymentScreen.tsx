@@ -21,14 +21,52 @@ interface QRPaymentScreenProps {
 
 export default function QRPaymentScreen({ onBack, onPaymentComplete }: QRPaymentScreenProps) {
   const [timeLeft, setTimeLeft] = useState(180);
+  const [amount, setAmount] = useState(19990); // 결제 금액 상태
   const [qrData, setQrData] = useState<QRCodeData>({
     paymentId: 'payment_123456',
-    amount: 15000,
+    amount: amount,
     expiresAt: new Date(Date.now() + 180000),
   });
   
-  // QR 코드를 위한 고정 timestamp 생성 (한 번만)
+  // API에서 받아온 secret 값
+  const [qrSecret, setQrSecret] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // QR 코드용 고정 timestamp (한 번만 생성)
   const [fixedTimestamp] = useState(new Date().toISOString());
+
+  // QR 코드 생성 (목 데이터 사용)
+  const generateQRCode = async () => {
+    try {
+      setIsLoading(true);
+      
+      // 목 데이터로 QR 코드 생성 (1초 로딩 시뮬레이션)
+      setTimeout(() => {
+        const mockSecret = `mock_payment_qr_${amount}_${Date.now()}`;
+        console.log('목 QR secret 생성:', mockSecret);
+        setQrSecret(mockSecret);
+        setIsLoading(false);
+      }, 1000);
+      
+    } catch (error) {
+      console.log('QR 생성 에러:', error);
+      setQrSecret('fallback_qr_code_' + Date.now());
+      setIsLoading(false);
+    }
+  };
+
+  // amount 변경 시 qrData 업데이트
+  useEffect(() => {
+    setQrData(prev => ({
+      ...prev,
+      amount: amount
+    }));
+  }, [amount]);
+
+  // 컴포넌트 마운트 시 QR 코드 생성
+  useEffect(() => {
+    generateQRCode();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -44,26 +82,12 @@ export default function QRPaymentScreen({ onBack, onPaymentComplete }: QRPayment
     return () => clearInterval(timer);
   }, []);
 
-  // 테스트를 위해 5초 후 자동 결제 완료
-  useEffect(() => {
-    const paymentTimer = setTimeout(() => {
-      onPaymentComplete?.();
-    }, 5000);
-
-    return () => clearTimeout(paymentTimer);
-  }, [onPaymentComplete]);
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const qrValue = JSON.stringify({
-    paymentId: qrData.paymentId,
-    amount: qrData.amount,
-    timestamp: fixedTimestamp,
-  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,25 +108,38 @@ export default function QRPaymentScreen({ onBack, onPaymentComplete }: QRPayment
       </View>
 
       <View style={styles.qrSection}>
-        <QRCode
-          value={qrValue}
-          size={202}
-          color="black"
-          backgroundColor="white"
-        />
-        
-        <Text style={styles.instructionText}>
-          위 QR 코드를 인식해주세요
-        </Text>
-        
-        <View style={styles.timerContainer}>
-          <Text style={styles.timerText}>
-            {formatTime(timeLeft)}
-          </Text>
-          <Text style={styles.expireText}>
-            {' '}만료
-          </Text>
-        </View>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>QR 코드 생성중...</Text>
+          </View>
+        ) : qrSecret ? (
+          <>
+            <QRCode
+              value={qrSecret}
+              size={202}
+              color="black"
+              backgroundColor="white"
+            />
+            
+            <Text style={styles.instructionText}>
+              위 QR 코드를 인식해주세요
+            </Text>
+            
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                {formatTime(timeLeft)}
+              </Text>
+              <Text style={styles.expireText}>
+                {' '}만료
+              </Text>
+            </View>
+          </>
+        ) : (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>QR 코드 생성 실패</Text>
+            <Text style={styles.errorText}>다시 시도해주세요</Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.affiliationSection}>
@@ -162,6 +199,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 202,
+  },
+  loadingText: {
+    fontSize: 17,
+    color: '#6F7785',
+    fontWeight: '500',
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#F03839',
+    fontWeight: '400',
+    lineHeight: 20,
+    textAlign: 'center',
+    marginTop: 8,
   },
   instructionText: {
     fontSize: 17,

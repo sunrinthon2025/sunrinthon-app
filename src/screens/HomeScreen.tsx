@@ -13,6 +13,13 @@ import {
 import { CreditCard, Search, MapPin } from 'lucide-react-native';
 import QRIcon from '../assets/icon/scan-qr-code1.svg';
 
+interface Store {
+  id: number;
+  name: string;
+  distance: string;
+  image: any;
+}
+
 interface HomeScreenProps {
   onPaymentPress?: () => void;
   onSearchPress?: () => void;
@@ -27,10 +34,10 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
     { id: 4, name: '편의점', image: require('../assets/images/gs25.png') },
   ];
 
-  const subwayStores = [
-    { id: 1, name: '서브웨이 강남역점', distance: '32m' },
-    { id: 2, name: '서브웨이', distance: '120m' },
-    { id: 3, name: '서브웨이', distance: '200m' },
+  const favoriteStores: Store[] = [
+    { id: 1, name: '서브웨이 강남역점', distance: '32m', image: require('../assets/images/subway.png') },
+    { id: 2, name: '맥도날드 부천역점', distance: '120m', image: require('../assets/images/mac.png') },
+    { id: 3, name: '버거킹 역곡점', distance: '200m', image: require('../assets/images/king.png') },
   ];
 
   const popularStores = [
@@ -87,7 +94,7 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
 
         <View style={styles.storeSection}>
           <Text style={styles.sectionTitle}>내가 자주 이용하는 가맹점</Text>
-          {subwayStores.map((store) => (
+          {favoriteStores.map((store: Store) => (
             <TouchableOpacity 
               key={store.id} 
               style={styles.storeItem}
@@ -99,7 +106,7 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
               })}
             >
               <Image 
-                source={require('../assets/images/subway.png')} 
+                source={store.image} 
                 style={styles.storeImage}
                 resizeMode="cover"
               />
@@ -127,15 +134,15 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
               <Text style={styles.locationText}>부천시 관악구</Text>
             </View>
           </View>
-          {subwayStores.map((store) => (
+          {favoriteStores.map((store: Store) => (
             <TouchableOpacity key={store.id} style={styles.storeItem}>
               <Image 
-                source={require('../assets/images/subway.png')} 
+                source={store.image} 
                 style={styles.storeImage}
                 resizeMode="cover"
               />
               <View style={styles.storeInfo}>
-                <Text style={styles.storeName}>서브웨이</Text>
+                <Text style={styles.storeName}>{store.name}</Text>
                 <Text style={styles.storeDistance}>{store.distance}</Text>
               </View>
             </TouchableOpacity>
