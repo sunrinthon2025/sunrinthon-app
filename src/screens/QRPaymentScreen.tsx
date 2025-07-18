@@ -7,13 +7,18 @@ import {
   StatusBar,
   Dimensions,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { QRCodeData } from '../types';
 
 const { width } = Dimensions.get('window');
 
-export default function QRPaymentScreen() {
+interface QRPaymentScreenProps {
+  onBack?: () => void;
+}
+
+export default function QRPaymentScreen({ onBack }: QRPaymentScreenProps) {
   const [timeLeft, setTimeLeft] = useState(152);
   const [qrData, setQrData] = useState<QRCodeData>({
     paymentId: 'payment_123456',
@@ -52,6 +57,9 @@ export default function QRPaymentScreen() {
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       
       <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
         <View style={styles.logoContainer}>
           <Image 
             source={require('../assets/logo.png')} 
@@ -105,6 +113,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 20,
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 20,
+    zIndex: 1,
+    padding: 8,
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: '#000',
+    fontWeight: 'bold',
   },
   logoContainer: {
     display: 'flex',

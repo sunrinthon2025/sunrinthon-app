@@ -15,7 +15,11 @@ import ScanQRIcon from '../assets/icon/scan-qr-code.svg';
 import SearchIcon from '../assets/icon/search.svg';
 import MapPinIcon from '../assets/icon/map-pin.svg';
 
-export default function HomeScreen() {
+interface HomeScreenProps {
+  onPaymentPress?: () => void;
+}
+
+export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -43,7 +47,7 @@ export default function HomeScreen() {
           </View>
           <Text style={styles.balanceAmount}>19,990원</Text>
           
-          <TouchableOpacity style={styles.paymentButton}>
+          <TouchableOpacity style={styles.paymentButton} onPress={onPaymentPress}>
             <View style={styles.buttonContent}>
               <ScanQRIcon width={20} height={20} fill="#ffffff" />
               <Text style={styles.paymentButtonText}>가맹점 결제하기</Text>

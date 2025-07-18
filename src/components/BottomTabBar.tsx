@@ -5,10 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import HouseIcon from '../assets/icon/house.svg';
-import MapIcon from '../assets/icon/map.svg';
-import CreditCardIcon from '../assets/icon/credit-card.svg';
-import UserIcon from '../assets/icon/circle-user-round.svg';
+import { Home, Map, CreditCard, User } from 'lucide-react-native';
 
 interface BottomTabBarProps {
   activeTab: string;
@@ -17,10 +14,10 @@ interface BottomTabBarProps {
 
 export default function BottomTabBar({ activeTab, onTabPress }: BottomTabBarProps) {
   const tabs = [
-    { key: 'home', label: '홈', Icon: HouseIcon },
-    { key: 'map', label: '지도', Icon: MapIcon },
-    { key: 'history', label: '결제 내역', Icon: CreditCardIcon },
-    { key: 'profile', label: '프로필', Icon: UserIcon },
+    { key: 'home', label: '홈', Icon: Home },
+    { key: 'map', label: '지도', Icon: Map },
+    { key: 'history', label: '결제 내역', Icon: CreditCard },
+    { key: 'profile', label: '프로필', Icon: User },
   ];
 
   return (
@@ -34,9 +31,9 @@ export default function BottomTabBar({ activeTab, onTabPress }: BottomTabBarProp
             onPress={() => onTabPress(tab.key)}
           >
             <IconComponent 
-              width={24}
-              height={24}
-              fill={activeTab === tab.key ? '#000000' : '#6F7785'}
+              size={24}
+              stroke={activeTab === tab.key ? '#000000' : '#6F7785'}
+              strokeWidth={2}
             />
             <Text style={[
               styles.label,
