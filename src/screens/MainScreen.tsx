@@ -13,6 +13,7 @@ import StoreDetailScreen from './StoreDetailScreen';
 import OrderScreen from './OrderScreen';
 import OrderStatusScreen from './OrderStatusScreen';
 import PaymentCompleteScreen from './PaymentCompleteScreen';
+import ProfileScreen from './ProfileScreen';
 import BottomTabBar from '../components/BottomTabBar';
 
 export default function MainScreen() {
@@ -139,7 +140,7 @@ export default function MainScreen() {
       case 'history':
         return <PaymentHistoryScreen />;
       case 'profile':
-        return <QRPaymentScreen onBack={handleBackFromQR} onPaymentComplete={handlePaymentComplete} />; // 임시로 QR 화면 표시
+        return <ProfileScreen />;
       default:
         return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} onStorePress={handleStorePress} />;
     }

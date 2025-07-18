@@ -31,11 +31,6 @@ export default function PaymentHistoryScreen() {
               style={styles.appLogo}
               resizeMode="contain"
             />
-            <ProfileImage 
-              size={36}
-              name="김소방"
-              showName={false}
-            />
           </View>
           <Image 
             source={require('../assets/firestation.png')} 
