@@ -10,7 +10,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { CreditCard, ScanLine, Search, MapPin, Package } from 'lucide-react-native';
+import { CreditCard, ScanLine, Search, MapPin } from 'lucide-react-native';
 
 interface HomeScreenProps {
   onPaymentPress?: () => void;
@@ -30,11 +30,12 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
     { id: 3, name: '서브웨이', distance: '200m' },
   ];
 
-  const mcdonaldsStores = [
-    { id: 1, name: '맥도날드 부천역점', distance: '1.2km' },
-    { id: 2, name: '맥도날드 부천역점', distance: '1.2km' },
-    { id: 3, name: '맥도날드 부천역점', distance: '1.2km' },
+  const popularStores = [
+    { id: 1, name: '맥도날드 부천역점', subtitle: '이전 맥도날드 원조' },
+    { id: 2, name: '맥도날드 부천역점', subtitle: '이전 맥도날드 원조' },
   ];
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,23 +52,13 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
         </View>
 
         {/* 상단 헤더 섹션 */}
-        <View style={styles.headerSection}>
-          <TouchableOpacity style={styles.headerButton} onPress={onPaymentPress}>
-            <View style={styles.buttonContent}>
-              <Text style={styles.buttonSubtitle}>가맹점</Text>
-              <Text style={styles.buttonTitle}>QR 결제하기</Text>
-            </View>
-            <ScanLine size={24} color="#FF7049" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.headerButton}>
-            <View style={styles.buttonContent}>
-              <Text style={styles.buttonSubtitle}>가맹점</Text>
-              <Text style={styles.buttonTitle}>포장 주문하기</Text>
-            </View>
-            <Package size={24} color="#FF7049" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.headerButton} onPress={onPaymentPress}>
+          <View style={styles.buttonContent}>
+            <Text style={styles.buttonSubtitle}>가맹점</Text>
+            <Text style={styles.buttonTitle}>QR 결제하기</Text>
+          </View>
+          <ScanLine size={50} color="#FF7049" />
+        </TouchableOpacity>
 
         {/* 금액 카드 */}
         <View style={styles.amountCard}>
@@ -128,17 +119,41 @@ export default function HomeScreen({ onPaymentPress }: HomeScreenProps) {
 
         {/* 선택 받고있는 가맹점 */}
         <View style={styles.popularSection}>
-          <Text style={styles.sectionTitle}>나와 가까운 가맹점</Text>
-          {mcdonaldsStores.map((store) => (
-            <TouchableOpacity key={store.id} style={styles.popularStoreItem}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.popularSectionTitle}>나와 가까운 가맹점</Text>
+            <View style={styles.locationContainer}>
+              <MapPin size={16} color="#6F7785" />
+              <Text style={styles.locationText}>부천시 관악구</Text>
+            </View>
+          </View>
+          {subwayStores.map((store) => (
+            <TouchableOpacity key={store.id} style={styles.storeItem}>
               <Image 
-                source={{ uri: 'https://via.placeholder.com/300x200/FFD700/000000?text=McDonald%27s' }} 
-                style={styles.popularStoreImage}
+                source={require('../assets/images/subway.png')} 
+                style={styles.storeImage}
                 resizeMode="cover"
               />
-              <View style={styles.popularStoreInfo}>
-                <Text style={styles.popularStoreName}>{store.name}</Text>
-                <Text style={styles.popularStoreDistance}>{store.distance}</Text>
+              <View style={styles.storeInfo}>
+                <Text style={styles.storeName}>서브웨이</Text>
+                <Text style={styles.storeDistance}>{store.distance}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* 현재 인기있는 가맹점 */}
+        <View style={styles.trendingSection}>
+          <Text style={styles.trendingSectionTitle}>현재 인기있는 가맹점</Text>
+          {popularStores.map((store) => (
+            <TouchableOpacity key={store.id} style={styles.trendingStoreItem}>
+                             <Image 
+                 source={require('../assets/images/mc.jpg')} 
+                 style={styles.trendingStoreImage}
+                 resizeMode="cover"
+               />
+              <View style={styles.trendingStoreInfo}>
+                <Text style={styles.trendingStoreName}>{store.name}</Text>
+                <Text style={styles.trendingStoreSubtitle}>{store.subtitle}</Text>
               </View>
             </TouchableOpacity>
           ))}
@@ -167,13 +182,7 @@ const styles = StyleSheet.create({
     height: 36,
     aspectRatio: 1,
   },
-  headerSection: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 20,
-  },
   headerButton: {
-    flex: 1,
     flexDirection: 'row',
     padding: 16,
     justifyContent: 'space-between',
@@ -189,6 +198,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
     gap: 8,
+    marginBottom: 20,
   },
   headerButtonText: {
     fontSize: 14,
@@ -288,7 +298,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000000',
     lineHeight: 26,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   storeItem: {
     flexDirection: 'row',
@@ -321,7 +331,8 @@ const styles = StyleSheet.create({
 
   adContainer: {
     alignSelf: 'stretch',
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
   },
   adImage: {
     height: 92.5,
@@ -332,28 +343,75 @@ const styles = StyleSheet.create({
   popularSection: {
     borderRadius: 12,
     marginBottom: 20,
+    marginTop: 30,
   },
-  popularStoreItem: {
-    marginBottom: 16,
-    borderRadius: 8,
-    overflow: 'hidden',
+
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
   },
-  popularStoreImage: {
-    width: '100%',
-    height: 120,
-    marginBottom: 8,
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
-  popularStoreInfo: {
-    paddingHorizontal: 8,
-  },
-  popularStoreName: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#333333',
-    marginBottom: 2,
-  },
-  popularStoreDistance: {
-    fontSize: 12,
-    color: '#6F7785',
-  },
-}); 
+     locationText: {
+     fontSize: 14,
+     fontWeight: '500',
+     color: '#6F7785',
+     lineHeight: 20,
+   },
+   popularSectionTitle: {
+     fontSize: 18,
+     fontWeight: '600',
+     color: '#000000',
+     lineHeight: 26,
+   },
+   trendingSection: {
+     borderRadius: 12,
+     marginBottom: 20,
+     marginTop: 10,
+   },
+   trendingSectionTitle: {
+     fontSize: 18,
+     fontWeight: '600',
+     color: '#000000',
+     lineHeight: 26,
+     marginBottom: 12,
+   },
+   trendingStoreItem: {
+     flexDirection: 'column',
+     alignItems: 'flex-start',
+     gap: 12,
+     alignSelf: 'stretch',
+     marginBottom: 20,
+     borderRadius: 16,
+     overflow: 'hidden',
+     backgroundColor: '#ffffff',
+   },
+   trendingStoreImage: {
+     height: 170,
+     width: '100%',
+     alignSelf: 'stretch',
+     borderRadius: 16,
+   },
+   trendingStoreInfo: {
+     alignItems: 'flex-start',
+     alignSelf: 'stretch',
+   },
+   trendingStoreName: {
+     fontSize: 17,
+     fontWeight: '500',
+     color: '#0D0E0E',
+     lineHeight: 24,
+     marginBottom: 4,
+   },
+   trendingStoreSubtitle: {
+     fontSize: 14,
+     fontWeight: '500',
+     color: '#6F7785',
+     lineHeight: 20,
+   },
+});
