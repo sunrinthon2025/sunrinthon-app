@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '80%',
     borderRadius: 20,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   buttonContainer: {
     paddingHorizontal: 24,

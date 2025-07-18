@@ -4,9 +4,10 @@ import MainScreen from './src/screens/MainScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import DocumentUploadScreen from './src/screens/DocumentUploadScreen';
 import ImageConfirmScreen from './src/screens/ImageConfirmScreen';
+import SignupCompleteScreen from './src/screens/SignupCompleteScreen';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<'onboarding' | 'documentUpload' | 'imageConfirm' | 'main'>('onboarding');
+  const [currentScreen, setCurrentScreen] = useState<'onboarding' | 'documentUpload' | 'imageConfirm' | 'signupComplete' | 'main'>('onboarding');
   const [uploadedImageUri, setUploadedImageUri] = useState<string>('');
 
   const handleOnboardingComplete = () => {
@@ -19,6 +20,10 @@ export default function App() {
   };
 
   const handleImageConfirm = () => {
+    setCurrentScreen('signupComplete');
+  };
+
+  const handleSignupComplete = () => {
     setCurrentScreen('main');
   };
 
@@ -40,6 +45,8 @@ export default function App() {
             onRetake={handleRetakeImage}
           />
         );
+      case 'signupComplete':
+        return <SignupCompleteScreen onComplete={handleSignupComplete} />;
       case 'main':
         return <MainScreen />;
       default:
