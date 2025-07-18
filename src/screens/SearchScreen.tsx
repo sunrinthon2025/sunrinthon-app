@@ -30,6 +30,12 @@ export default function SearchScreen({ onBackPress }: SearchScreenProps) {
     { id: 2, name: '맥도날드 부천역점', subtitle: '이전 맥도날드 원조' },
   ];
 
+  const searchResults = [
+    { id: 1, name: '서브웨이', distance: '32m' },
+    { id: 2, name: '서브웨이', distance: '32m' },
+    { id: 3, name: '서브웨이', distance: '32m' },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -53,34 +59,55 @@ export default function SearchScreen({ onBackPress }: SearchScreenProps) {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* 최근 검색어 */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>최근 검색어</Text>
-          {recentSearches.map((search, index) => (
-            <TouchableOpacity key={index} style={styles.recentSearchItem}>
-              <Search size={17} color="#6F7785" />
-              <Text style={styles.recentSearchText}>{search}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {searchText.trim() === '' ? (
+          <>
+            {/* 최근 검색어 */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>최근 검색어</Text>
+              {recentSearches.map((search, index) => (
+                <TouchableOpacity key={index} style={styles.recentSearchItem}>
+                  <Search size={17} color="#6F7785" />
+                  <Text style={styles.recentSearchText}>{search}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
 
-        {/* 서비스가 추천하는 가맹점 */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>서비스가 추천하는 가맹점</Text>
-          {recommendedStores.map((store) => (
-            <TouchableOpacity key={store.id} style={styles.recommendedStoreItem}>
-              <Image 
-                source={require('../assets/images/mc.jpg')} 
-                style={styles.recommendedStoreImage}
-                resizeMode="cover"
-              />
-              <View style={styles.recommendedStoreInfo}>
-                <Text style={styles.recommendedStoreName}>{store.name}</Text>
-                <Text style={styles.recommendedStoreSubtitle}>{store.subtitle}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+            {/* 서비스가 추천하는 가맹점 */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>서비스가 추천하는 가맹점</Text>
+              {recommendedStores.map((store) => (
+                <TouchableOpacity key={store.id} style={styles.recommendedStoreItem}>
+                  <Image 
+                    source={require('../assets/images/mc.jpg')} 
+                    style={styles.recommendedStoreImage}
+                    resizeMode="cover"
+                  />
+                  <View style={styles.recommendedStoreInfo}>
+                    <Text style={styles.recommendedStoreName}>{store.name}</Text>
+                    <Text style={styles.recommendedStoreSubtitle}>{store.subtitle}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
+        ) : (
+          /* 검색 결과 */
+          <View style={styles.section}>
+            {searchResults.map((result) => (
+              <TouchableOpacity key={result.id} style={styles.searchResultItem}>
+                <Image 
+                  source={require('../assets/images/subway.png')} 
+                  style={styles.searchResultImage}
+                  resizeMode="cover"
+                />
+                <View style={styles.searchResultInfo}>
+                  <Text style={styles.searchResultName}>{result.name}</Text>
+                  <Text style={styles.searchResultDistance}>{result.distance}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -168,6 +195,34 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   recommendedStoreSubtitle: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#6F7785',
+    lineHeight: 20,
+  },
+  searchResultItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    gap: 12,
+  },
+  searchResultImage: {
+    width: 90,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: '#4CAF50',
+  },
+  searchResultInfo: {
+    flex: 1,
+  },
+  searchResultName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000000',
+    lineHeight: 26,
+    marginBottom: 2,
+  },
+  searchResultDistance: {
     fontSize: 14,
     fontWeight: '500',
     color: '#6F7785',
