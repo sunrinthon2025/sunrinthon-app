@@ -10,6 +10,7 @@ import QRPaymentScreen from './QRPaymentScreen';
 import PaymentHistoryScreen from './PaymentHistoryScreen';
 import SearchScreen from './SearchScreen';
 import StoreDetailScreen from './StoreDetailScreen';
+import OrderScreen from './OrderScreen';
 import BottomTabBar from '../components/BottomTabBar';
 
 export default function MainScreen() {
@@ -17,6 +18,7 @@ export default function MainScreen() {
   const [showQR, setShowQR] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showStoreDetail, setShowStoreDetail] = useState(false);
+  const [showOrder, setShowOrder] = useState(false);
   const [selectedStore, setSelectedStore] = useState<any>(null);
 
   const handlePaymentPress = () => {
@@ -33,6 +35,11 @@ export default function MainScreen() {
     setShowStoreDetail(true);
   };
 
+  const handleOrderPress = () => {
+    setShowStoreDetail(false);
+    setShowOrder(true);
+  };
+
   const handleBackFromQR = () => {
     setShowQR(false);
   };
@@ -44,6 +51,17 @@ export default function MainScreen() {
   const handleBackFromStoreDetail = () => {
     setShowStoreDetail(false);
     setSelectedStore(null);
+  };
+
+  const handleBackFromOrder = () => {
+    setShowOrder(false);
+    setShowStoreDetail(true);
+  };
+
+  const handlePaymentFromOrder = () => {
+    setShowOrder(false);
+    setSelectedStore(null);
+    setShowQR(true);
   };
 
   const renderScreen = () => {
@@ -60,7 +78,17 @@ export default function MainScreen() {
         <StoreDetailScreen 
           store={selectedStore} 
           onBack={handleBackFromStoreDetail}
-          onOrder={handlePaymentPress}
+          onOrder={handleOrderPress}
+        />
+      );
+    }
+
+    if (showOrder && selectedStore) {
+      return (
+        <OrderScreen 
+          store={selectedStore} 
+          onBack={handleBackFromOrder}
+          onPayment={handlePaymentFromOrder}
         />
       );
     }
@@ -79,8 +107,8 @@ export default function MainScreen() {
     }
   };
 
-  // StoreDetail 화면일 때는 SafeAreaView 사용하고 바텀바 숨김
-  if (showStoreDetail) {
+  // StoreDetail이나 Order 화면일 때는 SafeAreaView 사용하고 바텀바 숨김
+  if (showStoreDetail || showOrder) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
@@ -111,7 +139,7 @@ export default function MainScreen() {
       <View style={styles.content}>
         {renderScreen()}
       </View>
-      {!showQR && !showSearch && (
+      {!showQR && !showSearch && !showOrder && (
         <BottomTabBar 
           activeTab={activeTab}
           onTabPress={setActiveTab}
