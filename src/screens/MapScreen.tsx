@@ -10,6 +10,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import SearchIcon from '../assets/icon/search.svg';
 import CreditCardIcon from '../assets/icon/credit-card.svg';
@@ -98,21 +99,50 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       
-      <View style={styles.map}>
-        <View style={styles.mapPlaceholder}>
-          <Text style={styles.mapPlaceholderText}>지도 영역</Text>
-          <TouchableOpacity 
-            style={styles.subwayPinButton}
+      <MapView
+        style={styles.map}
+        initialRegion={region}
+        region={region}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        mapType="standard"
+      >
+        {/* 현재 위치 근처에 subwaypin 추가 */}
+        <Marker
+          coordinate={{
+            latitude: region.latitude + 0.001,
+            longitude: region.longitude + 0.001,
+          }}
+          onPress={() => {
+            setSelectedStore({
+              id: 1,
+              name: '서브웨이',
+              distance: '32m',
+              address: '서울특별시 중구 세종대로 110',
+              phone: '02-1234-5678',
+              rating: 4.5,
+              reviews: 128,
+            });
+            setModalVisible(true);
+          }}
+        >
+          <Image 
+            source={require('../assets/images/subwaypin.png')} 
+            style={styles.markerImage}
+            resizeMode="contain"
+          />
+        </Marker>
+
+        {/* 다른 매장들 */}
+        {stores.map((store) => (
+          <Marker
+            key={store.id}
+            coordinate={{
+              latitude: store.latitude,
+              longitude: store.longitude,
+            }}
             onPress={() => {
-              setSelectedStore({
-                id: 1,
-                name: '서브웨이',
-                distance: '32m',
-                address: '서울특별시 중구 세종대로 110',
-                phone: '02-1234-5678',
-                rating: 4.5,
-                reviews: 128,
-              });
+              setSelectedStore(store);
               setModalVisible(true);
             }}
           >
@@ -121,9 +151,9 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
               style={styles.markerImage}
               resizeMode="contain"
             />
-          </TouchableOpacity>
-        </View>
-      </View>
+          </Marker>
+        ))}
+      </MapView>
 
       {/* 검색바 - 지도 위 오버레이 */}
       <View style={styles.searchContainer}>

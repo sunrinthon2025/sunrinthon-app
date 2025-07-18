@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,13 @@ import {
   Image,
   Modal,
   ScrollView,
+  Animated,
+  PanResponder,
+  Dimensions,
 } from 'react-native';
 import { CreditCard, QrCode } from 'lucide-react-native';
+
+const { height: screenHeight } = Dimensions.get('window');
 
 interface Store {
   id: number;
@@ -33,6 +38,16 @@ export default function StoreDetailModal({
   onClose, 
   onOrder 
 }: StoreDetailModalProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const modalHeight = useRef(new Animated.Value(screenHeight * 0.45)).current;
+  
+  useEffect(() => {
+    if (visible) {
+      setIsExpanded(false);
+      modalHeight.setValue(screenHeight * 0.45);
+    }
+  }, [visible]);
+  
   const nearbyStores = [
     { id: 1, name: '서브웨이', distance: '50m', address: '서울특별시 중구 세종대로 110' },
     { id: 2, name: '서브웨이', distance: '85m', address: '서울특별시 중구 세종대로 120' },
@@ -40,6 +55,46 @@ export default function StoreDetailModal({
     { id: 4, name: '서브웨이', distance: '150m', address: '서울특별시 중구 세종대로 140' },
     { id: 5, name: '서브웨이', distance: '180m', address: '서울특별시 중구 세종대로 150' },
   ];
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (_, gestureState) => {
+      return Math.abs(gestureState.dy) > 5;
+    },
+    onPanResponderMove: (_, gestureState) => {
+      const newHeight = isExpanded 
+        ? screenHeight - gestureState.dy
+        : screenHeight * 0.45 - gestureState.dy;
+      
+      if (newHeight >= screenHeight * 0.45 && newHeight <= screenHeight) {
+        modalHeight.setValue(newHeight);
+      }
+    },
+    onPanResponderRelease: (_, gestureState) => {
+      const velocity = gestureState.vy;
+      
+      if (!isExpanded && (gestureState.dy < -100 || velocity < -0.5)) {
+        // 위로 드래그하거나 빠른 속도로 위로 스와이프 → 확장
+        setIsExpanded(true);
+        Animated.spring(modalHeight, {
+          toValue: screenHeight,
+          useNativeDriver: false,
+        }).start();
+      } else if (isExpanded && (gestureState.dy > 100 || velocity > 0.5)) {
+        // 아래로 드래그하거나 빠른 속도로 아래로 스와이프 → 축소
+        setIsExpanded(false);
+        Animated.spring(modalHeight, {
+          toValue: screenHeight * 0.45,
+          useNativeDriver: false,
+        }).start();
+      } else {
+        // 원래 상태로 복원
+        Animated.spring(modalHeight, {
+          toValue: isExpanded ? screenHeight : screenHeight * 0.45,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+  });
 
   return (
     <Modal
@@ -53,13 +108,16 @@ export default function StoreDetailModal({
         activeOpacity={1}
         onPress={onClose}
       >
-        <TouchableOpacity 
-          style={styles.modalContent}
-          activeOpacity={1}
-          onPress={(e) => e.stopPropagation()}
+        <Animated.View 
+          style={[styles.modalContent, { height: modalHeight }]}
         >
           {/* 드래그 핸들 */}
-          <View style={styles.dragHandle} />
+          <View 
+            style={styles.dragHandleContainer} 
+            {...panResponder.panHandlers}
+          >
+            <View style={styles.dragHandle} />
+          </View>
           
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* 결제 정보 카드 */}
@@ -118,9 +176,9 @@ export default function StoreDetailModal({
                 />
               </View>
             </View>
-          </View>
+                      </View>
           </ScrollView>
-        </TouchableOpacity>
+        </Animated.View>
       </TouchableOpacity>
     </Modal>
   );
@@ -137,15 +195,23 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    maxHeight: '30%',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    maxHeight: '50%',
+  },
+  dragHandleContainer: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    marginBottom: 5,
   },
   dragHandle: {
     width: 79,
     height: 5,
     backgroundColor: '#E4E4E4',
     borderRadius: 9999,
-    alignSelf: 'center',
-    marginBottom: 20,
   },
   storeHeader: {
     flexDirection: 'row',
