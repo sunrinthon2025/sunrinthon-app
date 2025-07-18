@@ -7,6 +7,7 @@ import {
 import HomeScreen from './HomeScreen';
 import MapScreen from './MapScreen';
 import QRPaymentScreen from './QRPaymentScreen';
+import PaymentHistoryScreen from './PaymentHistoryScreen';
 import BottomTabBar from '../components/BottomTabBar';
 
 export default function MainScreen() {
@@ -33,7 +34,7 @@ export default function MainScreen() {
       case 'map':
         return <MapScreen onPaymentPress={handlePaymentPress} />;
       case 'history':
-        return <QRPaymentScreen onBack={handleBackFromQR} />; // 임시로 QR 화면 표시
+        return <PaymentHistoryScreen />;
       case 'profile':
         return <QRPaymentScreen onBack={handleBackFromQR} />; // 임시로 QR 화면 표시
       default:

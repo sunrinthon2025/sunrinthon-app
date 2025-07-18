@@ -9,9 +9,7 @@ import {
   TextInput,
   Image,
   Alert,
-  ScrollView,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import SearchIcon from '../assets/icon/search.svg';
 import CreditCardIcon from '../assets/icon/credit-card.svg';
@@ -59,7 +57,7 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
       name: '서브웨이',
       latitude: 37.5665,
       longitude: 126.9780,
-      distance: '50m',
+      distance: '32m',
       address: '서울특별시 중구 세종대로 110',
       phone: '02-1234-5678',
       rating: 4.5,
@@ -81,7 +79,7 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
       name: '서브웨이',
       latitude: 37.5668,
       longitude: 126.9775,
-      distance: '120m',
+      distance: '32m',
       address: '서울특별시 중구 세종대로 130',
       phone: '02-1234-5680',
       rating: 4.7,
@@ -100,40 +98,32 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       
-      <MapView
-        style={styles.map}
-        initialRegion={region}
-        region={region}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        mapType="standard"
-      >
-        {/* 현재 위치 근처에 subwaypin 추가 */}
-        <Marker
-          coordinate={{
-            latitude: region.latitude + 0.001,
-            longitude: region.longitude + 0.001,
-          }}
-          onPress={() => {
-            setSelectedStore({
-              id: 1,
-              name: '서브웨이',
-              distance: '50m',
-              address: '서울특별시 중구 세종대로 110',
-              phone: '02-1234-5678',
-              rating: 4.5,
-              reviews: 128,
-            });
-            setModalVisible(true);
-          }}
-        >
-          <Image 
-            source={require('../assets/images/subwaypin.png')} 
-            style={styles.markerImage}
-            resizeMode="contain"
-          />
-        </Marker>
-      </MapView>
+      <View style={styles.map}>
+        <View style={styles.mapPlaceholder}>
+          <Text style={styles.mapPlaceholderText}>지도 영역</Text>
+          <TouchableOpacity 
+            style={styles.subwayPinButton}
+            onPress={() => {
+              setSelectedStore({
+                id: 1,
+                name: '서브웨이',
+                distance: '32m',
+                address: '서울특별시 중구 세종대로 110',
+                phone: '02-1234-5678',
+                rating: 4.5,
+                reviews: 128,
+              });
+              setModalVisible(true);
+            }}
+          >
+            <Image 
+              source={require('../assets/images/subwaypin.png')} 
+              style={styles.markerImage}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
 
       {/* 검색바 - 지도 위 오버레이 */}
       <View style={styles.searchContainer}>
@@ -172,6 +162,9 @@ export default function MapScreen({ onPaymentPress }: MapScreenProps) {
           </TouchableOpacity>
         ))}
       </View>
+
+
+
       {/* 매장 상세 모달 */}
       <StoreDetailModal
         visible={modalVisible}
@@ -264,64 +257,31 @@ const styles = StyleSheet.create({
   activeCategoryText: {
     color: '#4CAF50',
   },
-  storeListContainer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 20,
-    right: 20,
-    zIndex: 1,
-  },
-  storeListContent: {
-    paddingHorizontal: 0,
-  },
-  storeItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 12,
-    marginRight: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    minWidth: 200,
-  },
-  storeLogo: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#4CAF50',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  subwayText: {
-    color: '#FFD700',
-    fontSize: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  storeInfo: {
-    flex: 1,
-  },
-  storeName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  storeDistance: {
-    fontSize: 14,
-    color: '#6F7785',
-    fontWeight: '400',
-  },
+
   map: {
     flex: 1,
+    backgroundColor: '#f0f0f0',
+  },
+  mapPlaceholder: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mapPlaceholderText: {
+    fontSize: 18,
+    color: '#666',
+    marginBottom: 20,
+  },
+  subwayPinButton: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginLeft: -20,
+    marginTop: -20,
   },
   markerImage: {
     width: 40,
     height: 40,
   },
+  
 }); 
