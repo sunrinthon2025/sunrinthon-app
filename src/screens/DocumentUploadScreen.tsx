@@ -13,11 +13,10 @@ import * as ImagePicker from 'expo-image-picker';
 import { Camera, Folder, File } from 'lucide-react-native';
 
 interface DocumentUploadScreenProps {
-  onNext: () => void;
+  onImageUploaded: (imageUri: string) => void;
 }
 
-export default function DocumentUploadScreen({ onNext }: DocumentUploadScreenProps) {
-  const [activeTab, setActiveTab] = useState('소속증명서');
+export default function DocumentUploadScreen({ onImageUploaded }: DocumentUploadScreenProps) {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   const requestPermissions = async () => {
@@ -48,7 +47,9 @@ export default function DocumentUploadScreen({ onNext }: DocumentUploadScreenPro
     });
 
     if (!result.canceled) {
-      setUploadedImage(result.assets[0].uri);
+      const imageUri = result.assets[0].uri;
+      setUploadedImage(imageUri);
+      onImageUploaded(imageUri);
     }
   };
 
@@ -64,7 +65,9 @@ export default function DocumentUploadScreen({ onNext }: DocumentUploadScreenPro
     });
 
     if (!result.canceled) {
-      setUploadedImage(result.assets[0].uri);
+      const imageUri = result.assets[0].uri;
+      setUploadedImage(imageUri);
+      onImageUploaded(imageUri);
     }
   };
 
@@ -77,25 +80,7 @@ export default function DocumentUploadScreen({ onNext }: DocumentUploadScreenPro
           <Text style={styles.title}>제출해주세요</Text>
         </View>
 
-        {/* 탭 */}
-        <View style={styles.tabContainer}>
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === '소속증명서' && styles.activeTab]}
-            onPress={() => setActiveTab('소속증명서')}
-          >
-            <Text style={[styles.tabText, activeTab === '소속증명서' && styles.activeTabText]}>
-              소속증명서
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === '직업증명서' && styles.activeTab]}
-            onPress={() => setActiveTab('직업증명서')}
-          >
-            <Text style={[styles.tabText, activeTab === '직업증명서' && styles.activeTabText]}>
-              직업증명서
-            </Text>
-          </TouchableOpacity>
-        </View>
+
 
         {/* 업로드 버튼들 */}
         <View style={styles.uploadButtonsContainer}>
@@ -135,18 +120,7 @@ export default function DocumentUploadScreen({ onNext }: DocumentUploadScreenPro
         )}
       </ScrollView>
 
-      {/* 다음 버튼 */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={[styles.nextButton, !uploadedImage && styles.disabledButton]} 
-          onPress={onNext}
-          disabled={!uploadedImage}
-        >
-          <Text style={[styles.nextButtonText, !uploadedImage && styles.disabledButtonText]}>
-            다음
-          </Text>
-        </TouchableOpacity>
-      </View>
+
     </SafeAreaView>
   );
 }
@@ -172,36 +146,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 32,
   },
-  tabContainer: {
-    flexDirection: 'row',
-    padding: 4,
-    alignItems: 'flex-start',
-    gap: 0,
-    alignSelf: 'stretch',
-    borderRadius: 9999,
-    backgroundColor: '#F2F3F5',
-    marginBottom: 16,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    borderRadius: 9999,
-  },
-  activeTab: {
-    backgroundColor: '#ffffff',
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#6F7785',
-  },
-  activeTabText: {
-    color: '#000000',
-  },
+
   uploadButtonsContainer: {
     flexDirection: 'row',
     gap: 16,
@@ -278,28 +223,5 @@ const styles = StyleSheet.create({
     color: '#6F7785',
     lineHeight: 20,
   },
-  buttonContainer: {
-    paddingHorizontal: 24,
-    paddingBottom: 40,
-    paddingTop: 20,
-  },
-  nextButton: {
-    width: '100%',
-    height: 56,
-    backgroundColor: '#FF7049',
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  disabledButton: {
-    backgroundColor: '#E5E7EB',
-  },
-  nextButtonText: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  disabledButtonText: {
-    color: '#9CA3AF',
-  },
+
 }); 
