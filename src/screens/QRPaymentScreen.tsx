@@ -25,6 +25,9 @@ export default function QRPaymentScreen({ onBack }: QRPaymentScreenProps) {
     amount: 15000,
     expiresAt: new Date(Date.now() + 152000),
   });
+  
+  // QR 코드를 위한 고정 timestamp 생성 (한 번만)
+  const [fixedTimestamp] = useState(new Date().toISOString());
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -49,7 +52,7 @@ export default function QRPaymentScreen({ onBack }: QRPaymentScreenProps) {
   const qrValue = JSON.stringify({
     paymentId: qrData.paymentId,
     amount: qrData.amount,
-    timestamp: new Date().toISOString(),
+    timestamp: fixedTimestamp,
   });
 
   return (

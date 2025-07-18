@@ -19,7 +19,7 @@ interface OrderScreenProps {
     distance?: string;
   };
   onBack: () => void;
-  onPayment: () => void;
+  onPayment: (totalAmount: number) => void;
 }
 
 interface MenuItem {
@@ -103,7 +103,7 @@ export default function OrderScreen({ store, onBack, onPayment }: OrderScreenPro
       <View style={styles.bottomContainer}>
         <TouchableOpacity 
           style={[styles.paymentButton, totalAmount === 0 && styles.disabledButton]} 
-          onPress={totalAmount > 0 ? onPayment : undefined}
+          onPress={totalAmount > 0 ? () => onPayment(totalAmount) : undefined}
           disabled={totalAmount === 0}
         >
           <ShoppingBag size={20} color="#ffffff" />

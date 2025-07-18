@@ -5,8 +5,10 @@ import {
   StyleSheet,
   StatusBar,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { Home } from 'lucide-react-native';
 import * as Location from 'expo-location';
 
 interface OrderStatusScreenProps {
@@ -17,9 +19,10 @@ interface OrderStatusScreenProps {
     distance?: string;
   };
   orderAmount: number;
+  onHome: () => void;
 }
 
-export default function OrderStatusScreen({ store, orderAmount }: OrderStatusScreenProps) {
+export default function OrderStatusScreen({ store, orderAmount, onHome }: OrderStatusScreenProps) {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [region, setRegion] = useState({
     latitude: 37.5665,
@@ -81,25 +84,30 @@ export default function OrderStatusScreen({ store, orderAmount }: OrderStatusScr
 
       {/* 하단 주문 상태 카드 */}
       <View style={styles.orderCard}>
-        <View style={styles.cardContent}>
+        <View style={styles.statusTextContainer}>
           <Text style={styles.statusTitle}>음식이 조리중입니다</Text>
           <Text style={styles.statusSubtitle}>5분이 걸릴 예정이에요</Text>
-          
-          <View style={styles.storeInfo}>
-            <View style={styles.storeLogoContainer}>
-              <Image 
-                source={require('../assets/images/subway.png')} 
-                style={styles.storeLogo}
-                resizeMode="cover"
-              />
-            </View>
-            <View style={styles.storeDetails}>
-              <Text style={styles.storeName}>서브웨이</Text>
-              <Text style={styles.orderTime}>{getCurrentTime()}</Text>
-            </View>
-            <Text style={styles.orderAmount}>{orderAmount.toLocaleString()}원</Text>
-          </View>
         </View>
+        
+        <View style={styles.storeInfo}>
+          <View style={styles.storeLogoContainer}>
+            <Image 
+              source={require('../assets/images/subway.png')} 
+              style={styles.storeLogo}
+              resizeMode="cover"
+            />
+          </View>
+          <View style={styles.storeDetails}>
+            <Text style={styles.storeName}>서브웨이</Text>
+            <Text style={styles.orderTime}>{getCurrentTime()}</Text>
+          </View>
+          <Text style={styles.orderAmount}>{orderAmount.toLocaleString()}원</Text>
+        </View>
+
+        <TouchableOpacity style={styles.homeButton} onPress={onHome}>
+          <Home size={20} color="#ffffff" />
+          <Text style={styles.homeButtonText}>홈으로 가기</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -120,22 +128,25 @@ const styles = StyleSheet.create({
   orderCard: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
     backgroundColor: '#ffffff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderRadius: 20,
+    paddingVertical: 24,
     paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 40,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 8,
+    flexDirection: 'column',
+    gap: 24,
+    alignSelf: 'stretch',
+    shadowColor: 'rgba(0, 0, 0, 0.10)',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 1,
+    shadowRadius: 15,
+    elevation: 15,
+    marginBottom: 40,
   },
-  cardContent: {
-    gap: 16,
+  statusTextContainer: {
+    gap: 8,
+    alignSelf: 'stretch',
   },
   statusTitle: {
     fontSize: 20,
@@ -186,6 +197,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#FF7049',
+    lineHeight: 24,
+  },
+  homeButton: {
+    backgroundColor: '#FF7049',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+    alignSelf: 'stretch',
+  },
+  homeButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#ffffff',
     lineHeight: 24,
   },
 }); 

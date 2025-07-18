@@ -20,7 +20,9 @@ export default function MainScreen() {
   const [showSearch, setShowSearch] = useState(false);
   const [showStoreDetail, setShowStoreDetail] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
+  const [showOrderStatus, setShowOrderStatus] = useState(false);
   const [selectedStore, setSelectedStore] = useState<any>(null);
+  const [orderAmount, setOrderAmount] = useState(0);
 
   const handlePaymentPress = () => {
     setShowQR(true);
@@ -59,10 +61,17 @@ export default function MainScreen() {
     setShowStoreDetail(true);
   };
 
-  const handlePaymentFromOrder = () => {
+  const handlePaymentFromOrder = (totalAmount: number) => {
+    setOrderAmount(totalAmount);
     setShowOrder(false);
+    setShowOrderStatus(true);
+  };
+
+  const handleHomeFromOrderStatus = () => {
+    setShowOrderStatus(false);
     setSelectedStore(null);
-    setShowQR(true);
+    setOrderAmount(0);
+    setActiveTab('home');
   };
 
   const renderScreen = () => {
@@ -94,6 +103,16 @@ export default function MainScreen() {
       );
     }
 
+    if (showOrderStatus && selectedStore) {
+      return (
+        <OrderStatusScreen 
+          store={selectedStore} 
+          orderAmount={orderAmount}
+          onHome={handleHomeFromOrderStatus}
+        />
+      );
+    }
+
     switch (activeTab) {
       case 'home':
         return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} onStorePress={handleStorePress} />;
@@ -107,6 +126,17 @@ export default function MainScreen() {
         return <HomeScreen onPaymentPress={handlePaymentPress} onSearchPress={handleSearchPress} onStorePress={handleStorePress} />;
     }
   };
+
+  // OrderStatus 화면일 때는 SafeArea 없이 전체 화면 사용 (지도)
+  if (showOrderStatus) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.content}>
+          {renderScreen()}
+        </View>
+      </View>
+    );
+  }
 
   // StoreDetail이나 Order 화면일 때는 SafeAreaView 사용하고 바텀바 숨김
   if (showStoreDetail || showOrder) {
@@ -140,7 +170,7 @@ export default function MainScreen() {
       <View style={styles.content}>
         {renderScreen()}
       </View>
-      {!showQR && !showSearch && !showOrder && (
+      {!showQR && !showSearch && !showOrder && !showOrderStatus && (
         <BottomTabBar 
           activeTab={activeTab}
           onTabPress={setActiveTab}
