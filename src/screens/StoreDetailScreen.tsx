@@ -32,8 +32,6 @@ export default function StoreDetailScreen({ store, onBack, onOrder }: StoreDetai
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      
-      {/* 상단 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <ArrowLeft size={24} color="#000000" />
@@ -45,14 +43,12 @@ export default function StoreDetailScreen({ store, onBack, onOrder }: StoreDetai
         />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* 매장 정보 */}
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>      
         <View style={styles.storeInfo}>
           <Text style={styles.storeName}>{store.name}</Text>
           <Text style={styles.storeAddress}>{store.address}</Text>
         </View>
 
-        {/* 가맹점 소개 */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>가맹점 소개</Text>
           <Text style={styles.sectionContent}>
@@ -60,7 +56,6 @@ export default function StoreDetailScreen({ store, onBack, onOrder }: StoreDetai
           </Text>
         </View>
 
-        {/* 메뉴 */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>메뉴</Text>
           {menuItems.map((item) => (
@@ -82,7 +77,6 @@ export default function StoreDetailScreen({ store, onBack, onOrder }: StoreDetai
         </View>
       </ScrollView>
 
-      {/* 하단 주문 버튼 */}
       <View style={styles.bottomContainer}>
         <TouchableOpacity style={styles.orderButton} onPress={onOrder}>
           <ShoppingBag size={20} color="#ffffff" />

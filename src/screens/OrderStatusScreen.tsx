@@ -58,7 +58,6 @@ export default function OrderStatusScreen({ store, orderAmount, onHome }: OrderS
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       
-      {/* 지도 */}
       <MapView
         style={styles.map}
         initialRegion={region}
@@ -67,7 +66,6 @@ export default function OrderStatusScreen({ store, orderAmount, onHome }: OrderS
         showsMyLocationButton={true}
         mapType="standard"
       >
-        {/* 매장 위치 마커 */}
         <Marker
           coordinate={{
             latitude: region.latitude + 0.001,
@@ -82,7 +80,6 @@ export default function OrderStatusScreen({ store, orderAmount, onHome }: OrderS
         </Marker>
       </MapView>
 
-      {/* 하단 주문 상태 카드 */}
       <View style={styles.orderCard}>
         <View style={styles.statusTextContainer}>
           <Text style={styles.statusTitle}>음식이 조리중입니다</Text>

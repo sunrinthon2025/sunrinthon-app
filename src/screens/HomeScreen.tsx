@@ -45,7 +45,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* 상단 로고 */}
         <View style={styles.logoSection}>
           <Image 
             source={require('../assets/logo.png')} 
@@ -54,7 +53,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           />
         </View>
 
-        {/* 상단 헤더 섹션 */}
         <TouchableOpacity style={styles.headerButton} onPress={onPaymentPress}>
           <View style={styles.buttonContent}>
             <Text style={styles.buttonSubtitle}>가맹점</Text>
@@ -63,7 +61,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           <QRIcon width={50} height={50} fill="#FF7049" />
         </TouchableOpacity>
 
-        {/* 금액 카드 */}
         <View style={styles.amountCard}>
           <View style={styles.amountHeader}>
             <CreditCard size={20} color="#ffffff" />
@@ -72,7 +69,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           <Text style={styles.amountValue}>19,990원</Text>
         </View>
 
-        {/* 가맹점 검색 */}
         <View style={styles.searchSection}>
           <TouchableOpacity style={styles.searchContainer} onPress={onSearchPress}>
             <Search size={20} color="#6F7785" />
@@ -89,7 +85,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           </View>
         </View>
 
-        {/* 쉽게 가는 이용하는 가맹점 */}
         <View style={styles.storeSection}>
           <Text style={styles.sectionTitle}>내가 자주 이용하는 가맹점</Text>
           {subwayStores.map((store) => (
@@ -116,7 +111,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           ))}
         </View>
 
-        {/* 광고 이미지 */}
         <TouchableOpacity style={styles.adContainer}>
           <Image 
             source={require('../assets/images/ad.png')} 
@@ -125,7 +119,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           />
         </TouchableOpacity>
 
-        {/* 선택 받고있는 가맹점 */}
         <View style={styles.popularSection}>
           <View style={styles.sectionHeader}>
             <Text style={styles.popularSectionTitle}>나와 가까운 가맹점</Text>
@@ -149,7 +142,6 @@ export default function HomeScreen({ onPaymentPress, onSearchPress, onStorePress
           ))}
         </View>
 
-        {/* 현재 인기있는 가맹점 */}
         <View style={styles.trendingSection}>
           <Text style={styles.trendingSectionTitle}>현재 인기있는 가맹점</Text>
           {popularStores.map((store) => (

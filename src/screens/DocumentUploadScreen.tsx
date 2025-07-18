@@ -74,15 +74,11 @@ export default function DocumentUploadScreen({ onImageUploaded }: DocumentUpload
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content}>
-        {/* 제목 */}
         <View style={styles.titleSection}>
           <Text style={styles.title}>소속증명 및 직업증명서 중 하나를</Text>
           <Text style={styles.title}>제출해주세요</Text>
         </View>
 
-
-
-        {/* 업로드 버튼들 */}
         <View style={styles.uploadButtonsContainer}>
           <TouchableOpacity style={styles.uploadButton} onPress={pickImageFromCamera}>
             <View style={styles.uploadIcon}>
@@ -105,7 +101,6 @@ export default function DocumentUploadScreen({ onImageUploaded }: DocumentUpload
           </TouchableOpacity>
         </View>
 
-        {/* 업로드된 이미지 미리보기 */}
         {uploadedImage && (
           <View style={styles.previewContainer}>
             <Image source={{ uri: uploadedImage }} style={styles.previewImage} />

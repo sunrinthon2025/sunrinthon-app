@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import ProfileImage from '../components/ProfileImage';
 
 export default function PaymentHistoryScreen() {
   const paymentHistory = [
@@ -24,11 +25,18 @@ export default function PaymentHistoryScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content}>
         <View style={styles.header}>
-          <Image 
-            source={require('../assets/logo.png')} 
-            style={styles.appLogo}
-            resizeMode="contain"
-          />
+          <View style={styles.headerLeft}>
+            <Image 
+              source={require('../assets/logo.png')} 
+              style={styles.appLogo}
+              resizeMode="contain"
+            />
+            <ProfileImage 
+              size={36}
+              name="김소방"
+              showName={false}
+            />
+          </View>
           <Image 
             source={require('../assets/firestation.png')} 
             style={styles.fireLogo}
@@ -88,6 +96,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     paddingBottom: 30,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   appLogo: {
     width: 36,

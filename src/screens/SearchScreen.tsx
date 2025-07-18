@@ -40,8 +40,6 @@ export default function SearchScreen({ onBackPress, onStorePress }: SearchScreen
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      
-      {/* 상단 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity onPress={onBackPress}>
           <ArrowLeft size={24} color="#000000" />
@@ -62,7 +60,6 @@ export default function SearchScreen({ onBackPress, onStorePress }: SearchScreen
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {searchText.trim() === '' ? (
           <>
-            {/* 최근 검색어 */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>최근 검색어</Text>
               {recentSearches.map((search, index) => (
@@ -73,7 +70,6 @@ export default function SearchScreen({ onBackPress, onStorePress }: SearchScreen
               ))}
             </View>
 
-            {/* 서비스가 추천하는 가맹점 */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>서비스가 추천하는 가맹점</Text>
               {recommendedStores.map((store) => (

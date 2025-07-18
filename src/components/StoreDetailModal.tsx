@@ -111,7 +111,6 @@ export default function StoreDetailModal({
         <Animated.View 
           style={[styles.modalContent, { height: modalHeight }]}
         >
-          {/* 드래그 핸들 */}
           <View 
             style={styles.dragHandleContainer} 
             {...panResponder.panHandlers}
@@ -120,7 +119,6 @@ export default function StoreDetailModal({
           </View>
           
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* 결제 정보 카드 */}
             <View style={styles.paymentCard}>
             <View style={styles.balanceSection}>
               <View style={styles.balanceHeader}>
@@ -158,7 +156,6 @@ export default function StoreDetailModal({
               ))}
             </View>
             
-            {/* 하단 소속 정보 */}
             <View style={styles.footerSection}>
               <View style={styles.footerItem}>
                 <Image 

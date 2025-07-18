@@ -104,8 +104,7 @@ export default function MapScreen({ onPaymentPress, onStorePress }: MapScreenPro
         showsUserLocation={true}
         showsMyLocationButton={true}
         mapType="standard"
-      >
-        {/* 현재 위치 근처에 subwaypin 추가 */}
+      > 
         <Marker
           coordinate={{
             latitude: region.latitude + 0.001,
@@ -127,7 +126,6 @@ export default function MapScreen({ onPaymentPress, onStorePress }: MapScreenPro
           />
         </Marker>
 
-        {/* 다른 매장들 */}
         {stores.map((store) => (
           <Marker
             key={store.id}
@@ -153,7 +151,6 @@ export default function MapScreen({ onPaymentPress, onStorePress }: MapScreenPro
         ))}
       </MapView>
 
-      {/* 검색바 - 지도 위 오버레이 */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <SearchIcon width={20} height={20} fill="#6F7785" />
@@ -165,7 +162,6 @@ export default function MapScreen({ onPaymentPress, onStorePress }: MapScreenPro
         </View>
       </View>
 
-      {/* 카테고리 필터 - 지도 위 오버레이 */}
       <View style={styles.categoryContainer}>
         {categories.map((category) => (
           <TouchableOpacity

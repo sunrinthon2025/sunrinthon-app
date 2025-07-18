@@ -52,8 +52,6 @@ export default function OrderScreen({ store, onBack, onPayment }: OrderScreenPro
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      
-      {/* 상단 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <ArrowLeft size={24} color="#000000" />
@@ -62,7 +60,6 @@ export default function OrderScreen({ store, onBack, onPayment }: OrderScreenPro
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* 메뉴 섹션 */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>메뉴</Text>
           {menuItems.map((item) => (
@@ -99,7 +96,6 @@ export default function OrderScreen({ store, onBack, onPayment }: OrderScreenPro
         </View>
       </ScrollView>
 
-      {/* 하단 결제 버튼 */}
       <View style={styles.bottomContainer}>
         <TouchableOpacity 
           style={[styles.paymentButton, totalAmount === 0 && styles.disabledButton]} 
